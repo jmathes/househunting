@@ -1,4 +1,4 @@
-#!/user/bin/env python
+#!/usr/bin/env python
 
 places = [
     ('Quarantine Enforcement Platform', 'https://tinyurl.com/QEP-TJ2023'),
