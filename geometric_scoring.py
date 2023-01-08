@@ -167,26 +167,33 @@ def main():
             )
             for name, house in houses.items()
         ]))
-        mfr = max(max(len(strf(final[0])) for final in finals), 8)
+        mfr = max(max(len(strf(final[0])) for final in finals), len("Overall"))
+        mfr = max(len(ename) for ename in finals[0][2])
         mhc = max(max(len(strf(final[1])) for final in finals), 8)
         max_factors = {
-            factor_name: max(max(len(strf(final[2][factor_name])), 7) for final in finals)
+            factor_name: max(max(len(strf(final[2][factor_name])), len(factor_name)) for final in finals)
             for factor_name in finals[0][2]
         }
 
         def ml(s, l):
             return strf(s) + " " * (l - len(strf(s)))
 
-        def print_row(codename, final_rating, individual_ratings):
-            ratings = " ".join([
+        def print_row(codename, final_rating, biggest_problem, second_biggest_problem, individual_ratings):
+            ratings = " | ".join([
                 ml(evaluation_factor, max_factors[factname]) for factname, evaluation_factor in individual_ratings.items()
             ])
-            print(f"{ml(codename, mhc)}: {ml(final_rating, mfr)} {ratings}")
+            print(f"{ml(codename, mhc)} || {ml(final_rating, mfr)} | {ml(biggest_problem, mfr)} | {ml(second_biggest_problem, mfr)} || {ratings}")
 
 
-        print_row("house", "rating", {name: name for name in finals[0][2]})
+        print_row("house", "Overall", "Issue", "Issue", {name: name for name in finals[0][2]})
+        print_row("-----", "-----", "-----", "-----", {name: "---" for name in finals[0][2]})
+        lowest_ratings = {
+            factor_name: min(finals[i][2][factor_name] for i in range(len(finals)))
+            for factor_name in finals[0][2]
+        }
         for final_rating, house_codename, evaluation_factors in finals:
-            print_row(house_codename, 10 - final_rating, evaluation_factors)
+            problems = list(sorted((10 - v, k) for k, v in evaluation_factors.items()))
+            print_row(house_codename, 10 - final_rating, problems[-1][1], problems[-2][1], evaluation_factors)
 
 
     except HttpError as err:
