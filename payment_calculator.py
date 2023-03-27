@@ -1,19 +1,11 @@
-def ds(f):
-    ans = f"${int(f * 100) / 100}"
-    if "." not in ans:
-        ans += "."
-    while len(ans) < 3 or ans[-3] != ".":
-        ans += "0"
-    for spot in [6, 10]:
-        if len(ans) > spot + 1:
-            ans = ans[:-spot] + "," + ans[-spot:]
-    return ans
+from util import ds
 
 
-def explain(price, downpayment, annual_interest, monthly_payment, decrease_interest_to=None, decrease_after_years=0):
+def explain(price=1457000., downpayment=1547000*.2, annual_interest=6.4, monthly_payment=8293., decrease_interest_to=None, decrease_after_years=0., monthly_insurance=510., monthly_tax=1238.):
     if decrease_interest_to is None:
         decrease_interest_to = annual_interest
-    monthly_payment -= 1238 + 510
+    monthly_payment -= monthly_tax + monthly_insurance
+    print(monthly_payment)
     monthly_interest = annual_interest / 1200
     remaining_loan = price - downpayment
     years_elapsed = 0
@@ -26,8 +18,8 @@ def explain(price, downpayment, annual_interest, monthly_payment, decrease_inter
         monthly_totals = "    "
         if years_elapsed == decrease_after_years:
             monthly_interest = decrease_interest_to / 1200
-        if years_elapsed == 5:
-            remaining_loan -= 500000
+        # if years_elapsed == 5:
+        #     remaining_loan -= 500000
         for month in range(12):
             this_month_interest = remaining_loan * monthly_interest
             this_month_principal = monthly_payment - this_month_interest
@@ -48,8 +40,10 @@ def explain(price, downpayment, annual_interest, monthly_payment, decrease_inter
 explain(
     price=1400000,
     downpayment=1400000 * 0.2,
-    annual_interest=6.4,
-    monthly_payment=8500,
-    decrease_interest_to=2.4,
-    decrease_after_years=4,
+    # annual_interest=6.4,
+    monthly_payment=9000,
+    monthly_tax=1238 * .96,
+    # monthly_insurance=510,
+    # decrease_interest_to=4.4,
+    # decrease_after_years=6,
 )

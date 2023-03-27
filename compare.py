@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 places = [
     ('Quarantine Enforcement Platform', 'https://tinyurl.com/QEP-TJ2023'),
     ('Possum Lodge', 'https://tinyurl.com/PossumLodge-TJ2023'),
